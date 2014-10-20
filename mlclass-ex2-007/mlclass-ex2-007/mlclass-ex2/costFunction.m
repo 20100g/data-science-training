@@ -21,19 +21,11 @@ grad = zeros(size(theta));
 %
 
 partialSum = 0;
-partialGrad = zeros(size(theta));
 
-for i=1:m
-	hx_i=sigmoid(theta'*X(i,:)');
-	partialSum +=  (-y(i)*log(hx_i))-(1-y(i))*log(1-hx_i);
-	for k=1:size(theta)
-		partialGrad(k) += (hx_i - y(i)) * X(i,k);
-	end;
-end;
+h_x = sigmoid(X*theta);
+J = (-y'*log((h_x)) - (1 .- y')*log(1-h_x)) * (1/m);
+grad = ((h_x - y)'* X)*1/m;
 
-
-J = partialSum/m;
-grad = partialGrad./m;
 
 
 % =============================================================
