@@ -30,11 +30,9 @@ X = [ones(m, 1) X];
 %       for each row.
 %       
 
-
-
-
-
-
+multiclass_predictions = sigmoid(X*all_theta');
+[pred,ix] = max(multiclass_predictions,[],2);
+p = ix;
 
 % =========================================================================
 
