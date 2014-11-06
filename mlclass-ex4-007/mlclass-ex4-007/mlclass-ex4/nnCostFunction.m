@@ -63,8 +63,8 @@ Theta2_grad = zeros(size(Theta2));
 %
 
 X = [ones(m,1) X];
-z1 = X*Theta1';
-a2 = sigmoid(z1);
+z2 = X*Theta1';
+a2 = sigmoid(z2);
 a2 = [ones(m,1) a2];
 z3 = a2*Theta2';
 a3 = sigmoid(z3);
@@ -85,13 +85,28 @@ J += (lambda / (2*m)) * ( ...
 	 sum((Theta2(:,2:end).^2)(:)) ...
 	 );
 
-%J = sum(log(hx)'*y + log(1-hx)'*(1-y));
-%J=J/m;
+
+gradientLayer1 = zeros(hidden_layer_size, input_layer_size + 1);
+gradientLayer2 = zeros(num_labels, hidden_layer_size + 1);
 
 
+for i=1:m
 
+	delta3 = a3(i,:)' - yVec(i,:)';
+	size(Theta2);
+	size(delta3);
+	size(z2(i,:));
+	newz2 =  [1, z2(i,:)]';
+	delta2 = Theta2'*delta3 .* sigmoidGradient(newz2) ;
+	size(delta2);
+	gradientLayer2 += delta3 * a2(i,:);
+	partialGrad  = delta2 * X(i,:);
+	gradientLayer1 += partialGrad(2:end,:);
+	
+end
 
-
+Theta1_grad = gradientLayer1 ./m;
+Theta2_grad = gradientLayer2 ./m;
 
 
 
