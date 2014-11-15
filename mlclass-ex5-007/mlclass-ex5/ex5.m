@@ -164,7 +164,7 @@ pause;
 %  lambda to see how the fit and learning curve change.
 %
 
-lambda = 0;
+lambda = 1;
 [theta] = trainLinearReg(X_poly, y, lambda);
 
 % Plot training data and fit
@@ -179,6 +179,7 @@ figure(2);
 [error_train, error_val] = ...
     learningCurve(X_poly, y, X_poly_val, yval, lambda);
 plot(1:m, error_train, 1:m, error_val);
+error_val(size(error_val))
 
 title(sprintf('Polynomial Regression Learning Curve (lambda = %f)', lambda));
 xlabel('Number of training examples')
@@ -217,4 +218,19 @@ for i = 1:length(lambda_vec)
 end
 
 fprintf('Program paused. Press enter to continue.\n');
+pause;
+
+lambda = 3;
+theta = trainLinearReg(X_poly, y, lambda);
+error_test = linearRegCostFunction(X_poly_test, ytest,theta, 0)
+
+%for i=1:m
+	%theta = trainLinearReg(X_poly, y, lambda);
+	%[error_train, error_val] = validationCurve(X, y, Xval, yval);
+	%plot(1:m,error_train,1:m, error_val)
+	%hold on;
+%end
+
+
+
 pause;
