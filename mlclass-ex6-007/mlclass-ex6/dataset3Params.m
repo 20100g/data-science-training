@@ -23,7 +23,44 @@ sigma = 0.3;
 %        mean(double(predictions ~= yval))
 %
 
+possibleCVal = [0.01 0.03 0.1 0.3 1 3 10 30];
+possibleSigVal = [0.01 0.03 0.1 0.3 1 3 10 30];
+minValue = 1000000;
 
+%cCol= {[0.5,0.5,0.6]; "green"; "blue"; "yellow"; "cyan"; "magenta"; "black"};
+errorBySig = zeros(length(possibleSigVal),1);
+%hold off;
+%figure();
+
+
+for cIdx = 1:length(possibleCVal)
+	for sigIdx = 1:length(possibleSigVal)
+		model= svmTrain(X, y, possibleCVal(cIdx), @(x1, x2) gaussianKernel(x1, x2, possibleSigVal(sigIdx)));
+		predictions = svmPredict(model, Xval);
+		error = mean(double(predictions ~= yval));
+		errorBySig(sigIdx) = error;
+		if ( minValue >=  error)
+			%minValue
+			%error
+			minValue = error;
+			C = possibleCVal(cIdx);
+			sigma = possibleSigVal(sigIdx);
+		endif
+	end
+	%errorBySig
+	%plot(possibleSigVal, errorBySig, sprintf(';C=%f;',possibleCVal(cIdx)), 'Color', cCol{cIdx});
+	%xlabel("sigma")
+	%ylabel("error")
+	%axis([0 5 0 0.5])
+	%drawnow()
+	%hold on;
+	%C
+	%sigma
+end
+C
+sigma
+%legend();
+%figure()
 
 
 
