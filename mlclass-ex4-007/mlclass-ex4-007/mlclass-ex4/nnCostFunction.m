@@ -91,22 +91,21 @@ gradientLayer2 = zeros(num_labels, hidden_layer_size + 1);
 
 
 for i=1:m
-
 	delta3 = a3(i,:)' - yVec(i,:)';
-	size(Theta2);
-	size(delta3);
-	size(z2(i,:));
 	newz2 =  [1, z2(i,:)]';
 	delta2 = Theta2'*delta3 .* sigmoidGradient(newz2) ;
-	size(delta2);
 	gradientLayer2 += delta3 * a2(i,:);
 	partialGrad  = delta2 * X(i,:);
 	gradientLayer1 += partialGrad(2:end,:);
 	
 end
 
-Theta1_grad = gradientLayer1 ./m;
-Theta2_grad = gradientLayer2 ./m;
+regTheta1 = zeros(size(Theta1));
+regTheta2 = zeros(size(Theta2));
+regTheta1(:,2:end) = (lambda/m)*Theta1(:,2:end);
+regTheta2(:,2:end) = (lambda/m)*Theta2(:,2:end);
+Theta1_grad = gradientLayer1 ./m + regTheta1;
+Theta2_grad = gradientLayer2 ./m + regTheta2;
 
 
 
